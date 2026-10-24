@@ -1,0 +1,44 @@
+// Version resource for the probe module. FileDescription names the variant,
+// so tools\check-target.ps1 can show which one is installed on a target.
+// PROBE_MODE comes from build.cmd, as for probe.c.
+
+#if PROBE_MODE == 0
+#define PROBE_DESCRIPTION "vmxnet3-kdnet probe (normal)"
+#define PROBE_VERSION_STRING "0.1.0.0"
+#elif PROBE_MODE == 1
+#define PROBE_DESCRIPTION "vmxnet3-kdnet probe (hang-entry)"
+#define PROBE_VERSION_STRING "0.1.0.1"
+#elif PROBE_MODE == 2
+#define PROBE_DESCRIPTION "vmxnet3-kdnet probe (hang-checked)"
+#define PROBE_VERSION_STRING "0.1.0.2"
+#else
+#error PROBE_MODE must be 0, 1 or 2
+#endif
+
+1 VERSIONINFO
+FILEVERSION     0,1,0,PROBE_MODE
+PRODUCTVERSION  0,1,0,0
+FILEFLAGSMASK   0x3F
+FILEFLAGS       0x0
+FILEOS          0x40004   // VOS_NT_WINDOWS32
+FILETYPE        0x3       // VFT_DRV
+FILESUBTYPE     0x6       // VFT2_DRV_NETWORK
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", PROBE_DESCRIPTION
+            // .NET's FileVersionInfo (used by check-target.ps1) ignores the
+            // whole string block when FileVersion is missing.
+            VALUE "FileVersion", PROBE_VERSION_STRING
+            VALUE "InternalName", "kd_02_15ad.dll"
+            VALUE "OriginalFilename", "kd_02_15ad.dll"
+            VALUE "ProductName", "vmxnet3-kdnet"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

@@ -1,0 +1,46 @@
+#define VMX_STRING_INNER(x) #x
+#define VMX_STRING(x) VMX_STRING_INNER(x)
+#ifndef VMX_INIT_STOP_AFTER
+#define VMX_INIT_STOP_AFTER 0
+#endif
+1 VERSIONINFO
+#if VMX_FAULT_INJECT
+FILEVERSION 0,3,3,0
+PRODUCTVERSION 0,3,3,0
+#elif VMX_TRANSPORT
+FILEVERSION 0,3,0,0
+PRODUCTVERSION 0,3,0,0
+#else
+FILEVERSION 0,2,0,VMX_INIT_STOP_AFTER
+PRODUCTVERSION 0,2,0,0
+#endif
+FILEFLAGSMASK 0x3F
+FILEFLAGS 0
+FILEOS 0x40004
+FILETYPE 0x3
+FILESUBTYPE 0x6
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+#if VMX_FAULT_INJECT
+            VALUE "FileDescription", "vmxnet3-kdnet fault-once (manual reset, TEST ONLY)"
+            VALUE "FileVersion", "0.3.3.0"
+#elif VMX_TRANSPORT
+            VALUE "FileDescription", "vmxnet3-kdnet transport (experimental)"
+            VALUE "FileVersion", "0.3.0.0"
+#else
+            VALUE "FileDescription", "vmxnet3-kdnet init-only (stop after " VMX_STRING(VMX_INIT_STOP_AFTER) ")"
+            VALUE "FileVersion", "0.2.0." VMX_STRING(VMX_INIT_STOP_AFTER)
+#endif
+            VALUE "InternalName", "kd_02_15ad.dll"
+            VALUE "OriginalFilename", "kd_02_15ad.dll"
+            VALUE "ProductName", "vmxnet3-kdnet"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
